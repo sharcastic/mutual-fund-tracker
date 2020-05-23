@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import logo from "./logo.svg";
+import React, { useState, useContext } from "react";
+
+import ApplicationContext from "./context/ApplicationContext";
 import "./App.css";
-import { auth } from "./firebase";
 
 function App() {
+  const { loginAttempt, signOutAttempt } = useContext(ApplicationContext);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   /* const onClick = useCallback(() => {
@@ -12,14 +13,10 @@ function App() {
   }, [email, password]); */
   const onClick = () => {
     console.log("email", email, "password", password);
-    auth.signInWithEmailAndPassword(email, password).catch((error) => {
-      console.error("Error signing in with password and email", error);
-    });
+    loginAttempt(email, password);
   };
   const onSignoutClick = () => {
-    auth.signOut().catch((error) => {
-      console.error("Error while signing out!", error);
-    });
+    signOutAttempt();
   };
   const onChange = (field) => (event) => {
     field === "email"
