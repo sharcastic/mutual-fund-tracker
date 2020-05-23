@@ -18,7 +18,6 @@ firebase.initializeApp(FIREBASE_CONFIG);
 const auth = firebase.auth();
 
 const reducer = (userState = defaultContextUserState, action) => {
-  debugger;
   switch (action.type) {
     case LOGIN_ATTEMPT: {
       return { ...userState, loading: true };
@@ -61,7 +60,6 @@ const ApplicationContextProvider = ({ children }) => {
     const unsubscribe = auth.onAuthStateChanged(function (user) {
       console.log("USER STATE HAS CHANGED!");
       if (!userState.user && user) {
-        debugger;
         if (userState.loading) {
           dispatch({ type: LOGIN_SUCCESS, payload: { user } });
         } else {
