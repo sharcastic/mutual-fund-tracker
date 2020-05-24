@@ -1,17 +1,24 @@
 import React, { useState, useContext } from "react";
 
 import ApplicationContext from "./context/ApplicationContext";
-import { validateEmail, validatePassword } from "./constants";
+import {
+  validateEmail,
+  validatePassword,
+  NO_PROFILE_DATA,
+  RETRIEVED_PROFILE_DATA,
+} from "./constants";
 import "./App.css";
+import { useNavigate } from "react-router-dom";
 
 function App() {
+  const navigate = useNavigate();
   const { loginAttempt, signOutAttempt, userState } = useContext(
     ApplicationContext
   );
   const [password, setPassword] = useState({ error: undefined, value: "" });
   const [email, setEmail] = useState({ error: undefined, value: "" });
 
-  const onClick = () => {
+  const onClick = async () => {
     console.log("email", email, "password", password);
     const validEmail = validateEmail(email.value);
     const validPassword = validatePassword(password.value);
@@ -25,7 +32,18 @@ function App() {
       });
     }
     if (validPassword && validEmail) {
-      loginAttempt(email, password);
+      const { status, error = undefined } = await loginAttempt(
+        email.value,
+        password.value
+      );
+      console.log("STATUS", status);
+      if (status === NO_PROFILE_DATA) {
+        navigate("/user-details");
+      } else if (status === RETRIEVED_PROFILE_DATA) {
+        navigate("/home");
+      } else {
+        console.log("LOGIN ERROR!", error);
+      }
     }
   };
   const onSignoutClick = () => {
@@ -67,8 +85,18 @@ function App() {
             {password.error && <div>{password.error}</div>}
           </div>
         </form>
-        <button onClick={onClick}>Log in!</button>
+        <button onClick={onClick}>
+          {userState.loading ? "Logging user in!" : "Log in!"}
+        </button>
+        <button
+          onClick={() => {
+            navigate("/user-details");
+          }}
+        >
+          Navigate to User
+        </button>
         <button onClick={onSignoutClick}>Sign Out!!</button>
+        {userState.user && <div>USER LOGGED IN CURRENTLY!</div>}
       </header>
     </div>
   );

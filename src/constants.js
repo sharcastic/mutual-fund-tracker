@@ -10,6 +10,9 @@ export const SIGNED_OUT = "SIGNED_OUT";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_ERROR = "LOGIN_ERROR";
 export const SIGNOUT_ERROR = "SIGNOUT_ERROR";
+export const NO_LOGGED_IN_USER = "NO_LOGGED_IN_USER";
+export const RETRIEVED_PROFILE_DATA = "RETRIEVED_PROFILE_DATA";
+export const NO_PROFILE_DATA = "NO_PROFILE_DATA";
 
 export const FIREBASE_CONFIG = {
   apiKey: FIREBASE_APIKEY,
@@ -21,11 +24,15 @@ export const FIREBASE_CONFIG = {
 
 export const defaultContextUserState = {
   user: undefined,
-  loading: false,
+  loading: true,
   error: undefined,
+  restoringSession: true,
+  profileDetails: undefined,
 };
 
 export const validateEmail = (email) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 export const validatePassword = (password = "") => password.length >= 6;
+
+export const USER_PROFILE_DATABASE_NAME = "user-data";
