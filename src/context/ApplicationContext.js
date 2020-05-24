@@ -6,6 +6,7 @@ const AppliationContext = createContext({
   userState: defaultContextUserState,
   loginAttempt: undefined,
   signOutAttempt: undefined,
+  addProfileDetails: undefined,
 });
 
 export default AppliationContext;

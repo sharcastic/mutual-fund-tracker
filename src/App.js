@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 
+import Modal from "./components/Modal/Modal";
 import ApplicationContext from "./context/ApplicationContext";
 import {
   validateEmail,
@@ -17,6 +18,7 @@ function App() {
   );
   const [password, setPassword] = useState({ error: undefined, value: "" });
   const [email, setEmail] = useState({ error: undefined, value: "" });
+  const [loginModalOpen, setModalOpen] = useState(false);
 
   const onClick = async () => {
     console.log("email", email, "password", password);
@@ -38,7 +40,7 @@ function App() {
       );
       console.log("STATUS", status);
       if (status === NO_PROFILE_DATA) {
-        navigate("/user-details");
+        navigate("/user-details", { state: { allowed: true } });
       } else if (status === RETRIEVED_PROFILE_DATA) {
         navigate("/home");
       } else {
@@ -54,40 +56,22 @@ function App() {
       ? setEmail({ value, error: undefined })
       : setPassword({ value, error: undefined });
   };
+  const onTrackerOpen = () => {
+    if (userState.user) {
+      if (userState.profileDetails) {
+        navigate("/home");
+      } else {
+        navigate("/user-details", { state: { allowed: true } });
+      }
+    } else {
+      setModalOpen(true);
+    }
+  };
 
   return (
     <div className="App">
       <header className="App-header">
-        <form>
-          <div>
-            <label>
-              <span>Email</span>
-              <input
-                type="email"
-                onChange={onChange}
-                value={email.value}
-                name="email"
-              ></input>
-            </label>
-            {email.error && <div>{email.error}</div>}
-          </div>
-
-          <div>
-            <label>
-              <span>Password</span>
-              <input
-                type="password"
-                onChange={onChange}
-                value={password.value}
-                name="password"
-              ></input>
-            </label>
-            {password.error && <div>{password.error}</div>}
-          </div>
-        </form>
-        <button onClick={onClick}>
-          {userState.loading ? "Logging user in!" : "Log in!"}
-        </button>
+        <button onClick={onTrackerOpen}>Open Tracker!</button>
         <button
           onClick={() => {
             navigate("/user-details");
@@ -97,6 +81,40 @@ function App() {
         </button>
         <button onClick={onSignoutClick}>Sign Out!!</button>
         {userState.user && <div>USER LOGGED IN CURRENTLY!</div>}
+        {loginModalOpen && (
+          <Modal onCloseClick={() => setModalOpen(false)}>
+            <form>
+              <div>
+                <label>
+                  <span>Email</span>
+                  <input
+                    type="email"
+                    onChange={onChange}
+                    value={email.value}
+                    name="email"
+                  ></input>
+                </label>
+                {email.error && <div>{email.error}</div>}
+              </div>
+
+              <div>
+                <label>
+                  <span>Password</span>
+                  <input
+                    type="password"
+                    onChange={onChange}
+                    value={password.value}
+                    name="password"
+                  ></input>
+                </label>
+                {password.error && <div>{password.error}</div>}
+              </div>
+            </form>
+            <button onClick={onClick}>
+              {userState.loading ? "Logging user in!" : "Log in!"}
+            </button>
+          </Modal>
+        )}
       </header>
     </div>
   );

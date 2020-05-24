@@ -9,6 +9,7 @@ import {
   SIGNOUT_ERROR,
   RETRIEVED_PROFILE_DATA,
   NO_PROFILE_DATA,
+  ADDED_PROFILE_DATA,
 } from "./constants";
 
 export const reducer = (userState = defaultContextUserState, action) => {
@@ -41,6 +42,9 @@ export const reducer = (userState = defaultContextUserState, action) => {
     }
     case NO_PROFILE_DATA: {
       return userState;
+    }
+    case ADDED_PROFILE_DATA: {
+      return { ...userState, profileDetails: action.payload };
     }
     default:
       throw new Error();

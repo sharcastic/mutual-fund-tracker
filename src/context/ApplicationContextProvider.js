@@ -16,6 +16,7 @@ import {
   USER_PROFILE_DATABASE_NAME,
   RETRIEVED_PROFILE_DATA,
   NO_PROFILE_DATA,
+  ADDED_PROFILE_DATA,
 } from "../constants";
 import { reducer } from "../reducer";
 import ApplicationContext from "./ApplicationContext";
@@ -29,21 +30,42 @@ let db;
 const ApplicationContextProvider = ({ children }) => {
   const [userState, dispatch] = useReducer(reducer, defaultContextUserState);
 
+  const addProfileDetails = useCallback(
+    (details) => {
+      const { email } = userState.user;
+      return db
+        .collection(USER_PROFILE_DATABASE_NAME)
+        .doc(email)
+        .set({
+          ...details,
+        })
+        .then(() => {
+          dispatch({ type: ADDED_PROFILE_DATA, payload: details });
+          return { status: ADDED_PROFILE_DATA };
+        });
+    },
+    [userState.user]
+  );
+
+  const retrieveProfileDetails = useCallback(async (email) => {
+    const ref = db.collection(USER_PROFILE_DATABASE_NAME).doc(email);
+    const doc = await ref.get({ source: "server" });
+    if (doc.exists) {
+      dispatch({ type: RETRIEVED_PROFILE_DATA, payload: doc.data() });
+      console.log("DOCUMENT DATA", doc.data());
+      return { status: RETRIEVED_PROFILE_DATA };
+    } else {
+      dispatch({ type: NO_PROFILE_DATA });
+      return { status: NO_PROFILE_DATA };
+    }
+  }, []);
+
   const loginAttempt = useCallback((email, password) => {
     dispatch({ type: LOGIN_ATTEMPT });
     return auth
       .signInWithEmailAndPassword(email, password)
       .then(async ({ user }) => {
-        const ref = db.collection(USER_PROFILE_DATABASE_NAME).doc(user.email);
-        const doc = await ref.get({ source: "server" });
-        if (doc.exists) {
-          dispatch({ type: RETRIEVED_PROFILE_DATA, payload: doc.data() });
-          console.log("DOCUMENT DATA", doc.data());
-          return { status: RETRIEVED_PROFILE_DATA };
-        } else {
-          dispatch({ type: NO_PROFILE_DATA });
-          return { status: NO_PROFILE_DATA };
-        }
+        return await retrieveProfileDetails(user.email);
       })
       .catch((error) => {
         dispatch({ type: LOGIN_ERROR, payload: { message: error.message } });
@@ -65,10 +87,11 @@ const ApplicationContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(function (user) {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (userState.restoringSession) {
         if (user) {
           dispatch({ type: RESTORE_LOGIN_SESSION, payload: { user } });
+          await retrieveProfileDetails(user.email);
         } else {
           dispatch({ type: NO_LOGGED_IN_USER });
         }
@@ -86,11 +109,11 @@ const ApplicationContextProvider = ({ children }) => {
     return function cleanUp() {
       unsubscribe();
     };
-  }, [userState]);
+  }, [retrieveProfileDetails, userState]);
 
   return (
     <ApplicationContext.Provider
-      value={{ userState, loginAttempt, signOutAttempt }}
+      value={{ userState, loginAttempt, signOutAttempt, addProfileDetails }}
     >
       {children}
     </ApplicationContext.Provider>
