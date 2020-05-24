@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import ApplicationContext from "./context/ApplicationContext";
 import App from "./App";
 import HomePage from "./pages/HomePage";
+import FundPage from "./pages/FundPage";
 import UserInformationPage from "./pages/UserInformationPage";
 
 const ProtectedRoute = ({ component: Component }) => {
@@ -28,6 +29,10 @@ const RoutesComponent = () => {
         element={<ProtectedRoute component={UserInformationPage} />}
       />
       <Route path="/home" element={<ProtectedRoute component={HomePage} />} />
+      <Route
+        path="/fund/:id"
+        element={<ProtectedRoute component={FundPage} />}
+      />
     </Routes>
   );
 };
