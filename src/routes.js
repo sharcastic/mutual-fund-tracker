@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import ApplicationContext from "./context/ApplicationContext";
-import App from "./App";
+import App from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import FundPage from "./pages/FundPage";
 import WatchlistPage from "./pages/WatchlistPage";
