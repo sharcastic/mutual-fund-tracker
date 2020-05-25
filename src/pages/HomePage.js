@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+import { suggestedFunds } from "../constants";
 import useDebounce from "../utils/useDebounce";
 import MenuItem from "../components/MenuItem/MenuItem";
 
@@ -28,32 +29,52 @@ const HomePage = () => {
     }
   }, [debouncedSearchTerm]);
 
+  const renderContent = () => {
+    if (loading) {
+      return <div>Loading Funds!</div>;
+    }
+    if (!searchTerm) {
+      return (
+        <div>
+          <h3>Try searching for a mutual fund!</h3>
+          <div>
+            <h3>Here are some of our suggested funds!</h3>
+            {suggestedFunds.map(({ schemeName, schemeCode }) => (
+              <MenuItem
+                key={schemeCode}
+                schemeCode={schemeCode}
+                schemeName={schemeName}
+              />
+            ))}
+          </div>
+        </div>
+      );
+    }
+    if (listOfFunds.length === 0) {
+      return <div>No funds matching the search term! Try again!</div>;
+    }
+    return (
+      <div>
+        {listOfFunds.map(({ schemeName, schemeCode }) => (
+          <MenuItem
+            key={schemeCode}
+            schemeCode={schemeCode}
+            schemeName={schemeName}
+          />
+        ))}
+      </div>
+    );
+  };
+
   const onInputChange = (event) => setSearchTerm(event.target.value);
+
   return (
     <div>
       <div>Home Page!</div>
       <div>
         <input value={searchTerm} onChange={onInputChange} />
       </div>
-      <div>
-        {loading ? (
-          <div>Loading Funds!</div>
-        ) : (
-          <div>
-            {listOfFunds.length === 0 ? (
-              <div>No funds matching the search term! Try again!</div>
-            ) : (
-              listOfFunds.map(({ schemeName, schemeCode }) => (
-                <MenuItem
-                  key={schemeCode}
-                  schemeCode={schemeCode}
-                  schemeName={schemeName}
-                />
-              ))
-            )}
-          </div>
-        )}
-      </div>
+      <div>{renderContent()}</div>
     </div>
   );
 };

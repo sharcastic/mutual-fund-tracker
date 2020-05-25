@@ -41,3 +41,21 @@ export const validatePassword = (password = "") => password.length >= 6;
 
 export const USER_PROFILE_DATABASE_NAME = "user-data";
 export const WATCHLIST_DATABASE_NAME = "watchlist-data";
+
+export const suggestedFunds = [
+  { schemeCode: 103504, schemeName: "SBI BLUE CHIP FUND-REGULAR PLAN GROWTH" },
+  {
+    schemeCode: 111708,
+    schemeName: "BOI AXA Tax Advantage Fund-Regular Plan-Dividend",
+  },
+  { schemeCode: 100290, schemeName: "Kotak MNC" },
+  {
+    schemeCode: 112152,
+    schemeName:
+      "Canara Robeco Consumer Trends Fund - Regular Plan - Growth Option",
+  },
+  {
+    schemeCode: 102142,
+    schemeName: "Sundaram Rural and Consumption  Regular  Growth",
+  },
+];

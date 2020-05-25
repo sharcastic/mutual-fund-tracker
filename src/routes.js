@@ -5,6 +5,7 @@ import ApplicationContext from "./context/ApplicationContext";
 import App from "./App";
 import HomePage from "./pages/HomePage";
 import FundPage from "./pages/FundPage";
+import WatchlistPage from "./pages/WatchlistPage";
 import UserInformationPage from "./pages/UserInformationPage";
 
 const ProtectedRoute = ({ component: Component }) => {
@@ -32,6 +33,10 @@ const RoutesComponent = () => {
       <Route
         path="/fund/:id"
         element={<ProtectedRoute component={FundPage} />}
+      />
+      <Route
+        path="/watchlist"
+        element={<ProtectedRoute component={WatchlistPage} />}
       />
     </Routes>
   );
