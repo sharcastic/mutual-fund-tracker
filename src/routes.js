@@ -7,6 +7,7 @@ import HomePage from "./pages/HomePage";
 import FundPage from "./pages/FundPage";
 import WatchlistPage from "./pages/WatchlistPage";
 import UserInformationPage from "./pages/UserInformationPage";
+import EditProfilePage from "./pages/EditProfilePage";
 
 const ProtectedRoute = ({ component: Component }) => {
   const { userState } = useContext(ApplicationContext);
@@ -37,6 +38,10 @@ const RoutesComponent = () => {
       <Route
         path="/watchlist"
         element={<ProtectedRoute component={WatchlistPage} />}
+      />
+      <Route
+        path="/edit-profile"
+        element={<ProtectedRoute component={EditProfilePage} />}
       />
     </Routes>
   );
