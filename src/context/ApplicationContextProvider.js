@@ -1,7 +1,6 @@
 import React, { useEffect, useReducer, useCallback } from "react";
 import * as firebase from "firebase/app";
 import "firebase/auth";
-// import "firebase/firestore";
 
 import {
   FIREBASE_CONFIG,
@@ -17,18 +16,24 @@ import {
   RETRIEVED_PROFILE_DATA,
   NO_PROFILE_DATA,
   ADDED_PROFILE_DATA,
+  WATCHLIST_DATABASE_NAME,
+  RETRIEVED_WATCHLIST,
+  ADD_ITEM_TO_WATCHLIST,
+  REMOVED_ITEM_FROM_WATCHLIST,
 } from "../constants";
-import { reducer } from "../reducer";
+import { userStateReducer, watchlistReducer } from "../reducer";
 import ApplicationContext from "./ApplicationContext";
 
 firebase.initializeApp(FIREBASE_CONFIG);
 const auth = firebase.auth();
 let db;
 
-// const db = firebase.firestore();
-
 const ApplicationContextProvider = ({ children }) => {
-  const [userState, dispatch] = useReducer(reducer, defaultContextUserState);
+  const [userState, userDispatch] = useReducer(
+    userStateReducer,
+    defaultContextUserState
+  );
+  const [watchlist, watchlistDispatch] = useReducer(watchlistReducer, []);
 
   const addProfileDetails = useCallback(
     (details) => {
@@ -40,7 +45,7 @@ const ApplicationContextProvider = ({ children }) => {
           ...details,
         })
         .then(() => {
-          dispatch({ type: ADDED_PROFILE_DATA, payload: details });
+          userDispatch({ type: ADDED_PROFILE_DATA, payload: details });
           return { status: ADDED_PROFILE_DATA };
         });
     },
@@ -51,24 +56,35 @@ const ApplicationContextProvider = ({ children }) => {
     const ref = db.collection(USER_PROFILE_DATABASE_NAME).doc(email);
     const doc = await ref.get({ source: "server" });
     if (doc.exists) {
-      dispatch({ type: RETRIEVED_PROFILE_DATA, payload: doc.data() });
+      userDispatch({ type: RETRIEVED_PROFILE_DATA, payload: doc.data() });
       console.log("DOCUMENT DATA", doc.data());
       return { status: RETRIEVED_PROFILE_DATA };
     } else {
-      dispatch({ type: NO_PROFILE_DATA });
+      userDispatch({ type: NO_PROFILE_DATA });
       return { status: NO_PROFILE_DATA };
     }
   }, []);
 
+  const retrieveWatchlist = useCallback(async (email) => {
+    const ref = db.collection(WATCHLIST_DATABASE_NAME).doc(email);
+    const doc = await ref.get({ source: "server" });
+    watchlistDispatch({ type: RETRIEVED_WATCHLIST, payload: doc.data() });
+    console.log("WATCHLIST RETRIEVED", doc.data());
+  }, []);
+
   const loginAttempt = useCallback((email, password) => {
-    dispatch({ type: LOGIN_ATTEMPT });
+    userDispatch({ type: LOGIN_ATTEMPT });
     return auth
       .signInWithEmailAndPassword(email, password)
       .then(async ({ user }) => {
+        retrieveWatchlist(user.email);
         return await retrieveProfileDetails(user.email);
       })
       .catch((error) => {
-        dispatch({ type: LOGIN_ERROR, payload: { message: error.message } });
+        userDispatch({
+          type: LOGIN_ERROR,
+          payload: { message: error.message },
+        });
         return { status: LOGIN_ERROR, error };
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,9 +92,49 @@ const ApplicationContextProvider = ({ children }) => {
 
   const signOutAttempt = useCallback(() => {
     auth.signOut().catch((error) => {
-      dispatch({ type: SIGNOUT_ERROR, payload: { message: error.message } });
+      userDispatch({
+        type: SIGNOUT_ERROR,
+        payload: { message: error.message },
+      });
     });
   }, []);
+
+  const modifyWatchlist = useCallback((email, list, status) => {
+    return db
+      .collection(WATCHLIST_DATABASE_NAME)
+      .doc(email)
+      .set({ watchlist: list })
+      .then(() => {
+        watchlistDispatch({
+          type: status,
+          payload: list,
+        });
+        return { status };
+      })
+      .catch((err) => {
+        console.log(`Error when ${status}`, err);
+      });
+  }, []);
+
+  const addToWatchlist = useCallback(
+    (fund) => {
+      const updatedList = [...watchlist, fund];
+      const { email } = userState.user;
+      return modifyWatchlist(email, updatedList, ADD_ITEM_TO_WATCHLIST);
+    },
+    [modifyWatchlist, userState.user, watchlist]
+  );
+
+  const removeFromWatchlist = useCallback(
+    (fund) => {
+      const updatedList = watchlist.filter(
+        (i) => i.scheme_code !== fund.scheme_code
+      );
+      const { email } = userState.user;
+      return modifyWatchlist(email, updatedList, REMOVED_ITEM_FROM_WATCHLIST);
+    },
+    [modifyWatchlist, userState.user, watchlist]
+  );
 
   useEffect(() => {
     import("firebase/firestore").then(() => {
@@ -90,30 +146,39 @@ const ApplicationContextProvider = ({ children }) => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (userState.restoringSession) {
         if (user) {
-          dispatch({ type: RESTORE_LOGIN_SESSION, payload: { user } });
-          await retrieveProfileDetails(user.email);
+          userDispatch({ type: RESTORE_LOGIN_SESSION, payload: { user } });
+          retrieveProfileDetails(user.email);
+          retrieveWatchlist(user.email);
         } else {
-          dispatch({ type: NO_LOGGED_IN_USER });
+          userDispatch({ type: NO_LOGGED_IN_USER });
         }
       }
       if (!userState.user && user) {
         if (userState.loading) {
-          dispatch({ type: LOGIN_SUCCESS, payload: { user } });
+          userDispatch({ type: LOGIN_SUCCESS, payload: { user } });
         }
       }
       if (userState.user && !user) {
         console.log("USER SIGNED OUT!");
-        dispatch({ type: SIGNED_OUT });
+        userDispatch({ type: SIGNED_OUT });
       }
     });
     return function cleanUp() {
       unsubscribe();
     };
-  }, [retrieveProfileDetails, userState]);
+  }, [retrieveProfileDetails, retrieveWatchlist, userState]);
 
   return (
     <ApplicationContext.Provider
-      value={{ userState, loginAttempt, signOutAttempt, addProfileDetails }}
+      value={{
+        userState,
+        loginAttempt,
+        signOutAttempt,
+        addProfileDetails,
+        watchlist,
+        addToWatchlist,
+        removeFromWatchlist,
+      }}
     >
       {children}
     </ApplicationContext.Provider>

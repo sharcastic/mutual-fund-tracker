@@ -7,6 +7,9 @@ const AppliationContext = createContext({
   loginAttempt: undefined,
   signOutAttempt: undefined,
   addProfileDetails: undefined,
+  watchlist: undefined,
+  addToWatchlist: undefined,
+  removeFromWatchlist: undefined,
 });
 
 export default AppliationContext;

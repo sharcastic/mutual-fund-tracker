@@ -10,9 +10,15 @@ import {
   RETRIEVED_PROFILE_DATA,
   NO_PROFILE_DATA,
   ADDED_PROFILE_DATA,
+  REMOVED_ITEM_FROM_WATCHLIST,
+  ADD_ITEM_TO_WATCHLIST,
+  RETRIEVED_WATCHLIST,
 } from "./constants";
 
-export const reducer = (userState = defaultContextUserState, action) => {
+export const userStateReducer = (
+  userState = defaultContextUserState,
+  action
+) => {
   switch (action.type) {
     case LOGIN_ATTEMPT: {
       return { ...userState, loading: true };
@@ -45,6 +51,22 @@ export const reducer = (userState = defaultContextUserState, action) => {
     }
     case ADDED_PROFILE_DATA: {
       return { ...userState, profileDetails: action.payload };
+    }
+    default:
+      throw new Error();
+  }
+};
+
+export const watchlistReducer = (_, action) => {
+  switch (action.type) {
+    case RETRIEVED_WATCHLIST: {
+      return [...action.payload.watchlist];
+    }
+    case ADD_ITEM_TO_WATCHLIST: {
+      return [...action.payload];
+    }
+    case REMOVED_ITEM_FROM_WATCHLIST: {
+      return [...action.payload];
     }
     default:
       throw new Error();

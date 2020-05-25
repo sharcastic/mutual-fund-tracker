@@ -14,6 +14,9 @@ export const NO_LOGGED_IN_USER = "NO_LOGGED_IN_USER";
 export const RETRIEVED_PROFILE_DATA = "RETRIEVED_PROFILE_DATA";
 export const NO_PROFILE_DATA = "NO_PROFILE_DATA";
 export const ADDED_PROFILE_DATA = "ADDED_PROFILE_DATA";
+export const RETRIEVED_WATCHLIST = "RETRIEVED_WATCHLIST";
+export const ADD_ITEM_TO_WATCHLIST = "ADD_ITEM_TO_WATCHLIST";
+export const REMOVED_ITEM_FROM_WATCHLIST = "REMOVED_ITEM_FROM_WATCHLIST";
 
 export const FIREBASE_CONFIG = {
   apiKey: FIREBASE_APIKEY,
@@ -37,3 +40,4 @@ export const validateEmail = (email) =>
 export const validatePassword = (password = "") => password.length >= 6;
 
 export const USER_PROFILE_DATABASE_NAME = "user-data";
+export const WATCHLIST_DATABASE_NAME = "watchlist-data";
