@@ -1,8 +1,16 @@
 import React, { useState, useContext } from "react";
-import { TextField, Tab, Tabs, AppBar } from "@material-ui/core";
+import {
+  TextField,
+  Tab,
+  Tabs,
+  AppBar,
+  InputAdornment,
+} from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import SwipeableViews from "react-swipeable-views";
 
+import { ReactComponent as VisibilityIcon } from "../../assets/visibility.svg";
+import { ReactComponent as VisibilityOffIcon } from "../../assets/visibility-off.svg";
 import Button from "../Button/Button";
 import Modal from "../Modal/Modal";
 import ApplicationContext from "../../context/ApplicationContext";
@@ -17,6 +25,7 @@ const TabPanel = ({ value, index, loading, onButtonClick, error }) => {
   console.log("ERROR", error);
   const [password, setPassword] = useState({ error: undefined, value: "" });
   const [email, setEmail] = useState({ error: undefined, value: "" });
+  const [showPassword, setShowPassword] = useState(false);
 
   const onClick = () => {
     console.log("email", email, "password", password);
@@ -40,6 +49,8 @@ const TabPanel = ({ value, index, loading, onButtonClick, error }) => {
       ? setEmail({ value, error: undefined })
       : setPassword({ value, error: undefined });
   };
+
+  const toggleShowPassword = () => setShowPassword(!showPassword);
 
   return (
     <div role="tabpanel" hidden={value !== index}>
@@ -70,7 +81,18 @@ const TabPanel = ({ value, index, loading, onButtonClick, error }) => {
               className="password-input"
               error={!!password.error}
               helperText={password.error}
-              type="password"
+              type={showPassword ? "text" : "password"}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    {showPassword ? (
+                      <VisibilityOffIcon onClick={toggleShowPassword} />
+                    ) : (
+                      <VisibilityIcon onClick={toggleShowPassword} />
+                    )}
+                  </InputAdornment>
+                ),
+              }}
             />
           </form>
           <Button onClick={onClick} loading={loading} className="login-button">

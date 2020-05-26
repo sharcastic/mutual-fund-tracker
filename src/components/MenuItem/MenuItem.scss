@@ -1,0 +1,40 @@
+.menu-item {
+  border: 1px solid;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  h5 {
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+  }
+  .item-content {
+    display: grid;
+    grid-template-columns: 55% 35% 10%;
+    justify-items: center;
+    padding: 0 10px 10px 10px;
+  }
+  .content-left {
+    display: flex;
+    flex-direction: column;
+    justify-self: left;
+    span {
+      padding: 5px;
+    }
+  }
+  .content-right {
+    display: flex;
+    flex-direction: column;
+    .percentage {
+      align-self: center;
+    }
+    span {
+      padding: 5px;
+    }
+  }
+  svg {
+    justify-self: right;
+    width: 25px;
+    height: 25px;
+  }
+}

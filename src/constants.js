@@ -59,3 +59,15 @@ export const suggestedFunds = [
     schemeName: "Sundaram Rural and Consumption  Regular  Growth",
   },
 ];
+
+export const randomNumberGenerator = (max) => Math.floor(Math.random() * max);
+
+export const arrOfSchemeTypes = ["Open Ended Schemes", "Close Ended Schemes"];
+
+export const arrOfFundHouses = [
+  "SBI Mutual Fund",
+  "HDFC Mutual Fund",
+  "Vanguard Mutual Fund",
+  "Axis Bank Mutual Funds",
+  "Oswal Mutual Funds",
+];

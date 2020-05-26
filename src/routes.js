@@ -26,7 +26,7 @@ const RoutesComponent = () => {
   }
   return (
     <>
-      <Navbar />
+      <Navbar disabledRoutes={["/", "/user-details"]} />
       <Routes>
         <Route path="/" element={<App />} />
         <Route
@@ -43,7 +43,7 @@ const RoutesComponent = () => {
           element={<ProtectedRoute component={WatchlistPage} />}
         />
         <Route
-          path="/edit-profile"
+          path="/profile"
           element={<ProtectedRoute component={EditProfilePage} />}
         />
       </Routes>

@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 
 import ApplicationContext from "../context/ApplicationContext";
+import MenuItem from "../components/MenuItem/MenuItem";
 
 const Watchlist = () => {
   const { watchlist } = useContext(ApplicationContext);
@@ -11,9 +12,17 @@ const Watchlist = () => {
         <div>Add some items to your watchlist!</div>
       ) : (
         <div>
-          {watchlist.map((i) => (
-            <div>{i.scheme_name}</div>
-          ))}
+          {watchlist.map(
+            ({ schemeCode, schemeName, fund_house, scheme_type }) => (
+              <MenuItem
+                key={schemeCode}
+                schemeCode={schemeCode}
+                schemeName={schemeName}
+                fund_house={fund_house}
+                scheme_type={scheme_type}
+              />
+            )
+          )}
         </div>
       )}
     </div>

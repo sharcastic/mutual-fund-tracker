@@ -1,0 +1,29 @@
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  .home-header-right {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    span {
+      margin-right: 10px;
+    }
+    svg {
+      width: 25px;
+      height: 25px;
+    }
+  }
+
+  h4 {
+    margin: 0;
+  }
+  .search-input {
+    width: 100%;
+  }
+}
+
+.items-container {
+  overflow: scroll;
+}
