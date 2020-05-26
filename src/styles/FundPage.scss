@@ -1,0 +1,31 @@
+.fund-header {
+  display: flex;
+  align-items: center;
+  svg {
+    height: 25px;
+    width: 25px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+}
+
+.fund-container {
+  background-color: white;
+  h3 {
+    margin: 0;
+    padding: 20px 0;
+    text-align: center;
+  }
+  .fund-info {
+    padding-bottom: 15px;
+    margin: 0 30px;
+    .fund-label {
+      font-weight: bolder;
+    }
+  }
+  .button-container {
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+  }
+}

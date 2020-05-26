@@ -17,9 +17,7 @@ const navItems = [
 const Navbar = ({ disabledRoutes }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location);
   const [activeItem, setActiveItem] = useState();
-  // const onNavItemClick = (e) => setActiveItem(e.currentTarget.dataset.key);
   const onNavItemClick = ({
     currentTarget: {
       dataset: { key },

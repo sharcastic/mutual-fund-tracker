@@ -33,7 +33,7 @@ const LineChart = ({ id, data }) => (
       }}
       axisBottom={{
         format: "%b %y",
-        tickValues: "every 1 year",
+        tickValues: data.length > 1500 ? "every 2 years" : "every 1 year",
         tickPadding: 5,
       }}
       tooltip={({

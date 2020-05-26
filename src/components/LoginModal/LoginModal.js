@@ -22,7 +22,6 @@ import {
 } from "../../constants";
 
 const TabPanel = ({ value, index, loading, onButtonClick, error }) => {
-  console.log("ERROR", error);
   const [password, setPassword] = useState({ error: undefined, value: "" });
   const [email, setEmail] = useState({ error: undefined, value: "" });
   const [showPassword, setShowPassword] = useState(false);

@@ -1,14 +1,19 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
+import { ReactComponent as BackIcon } from "../assets/back.svg";
+import Button from "../components/Button/Button";
 import {
   ADD_ITEM_TO_WATCHLIST,
   REMOVED_ITEM_FROM_WATCHLIST,
 } from "../constants";
 import ApplicationContext from "../context/ApplicationContext";
 import LineChart from "../components/LineChart/LineChart";
+import "../styles/FundPage.scss";
 
 const FundPage = () => {
+  const navigate = useNavigate();
   const { addToWatchlist, removeFromWatchlist, watchlist } = useContext(
     ApplicationContext
   );
@@ -34,6 +39,10 @@ const FundPage = () => {
     }
   };
 
+  const onBackClick = () => {
+    navigate("/home");
+  };
+
   useEffect(() => {
     const item = watchlist.find((i) => i.scheme_code === parseInt(id, 10));
     setInWatchlist(!!item);
@@ -52,7 +61,6 @@ const FundPage = () => {
         });
         setFundDetails({ data: formattedData, meta });
       } catch (err) {
-        console.log("ERROR", err);
         setError("FETCH ERROR");
       } finally {
         setLoading(false);
@@ -63,25 +71,45 @@ const FundPage = () => {
   }, []);
   return (
     <div>
-      <div>Fund Page of scheme - {id}</div>
       {loading ? (
         <div>Loading fund details!</div>
       ) : (
         <div>
+          <div className="fund-header">
+            <BackIcon onClick={onBackClick} />
+            <h2>Fund Details</h2>
+          </div>
           {error ? (
             <div>{error}</div>
           ) : (
-            <div>
-              <div>Fund Details!</div>
-              <div>Fund House - {fundDetails.meta.fund_house}</div>
-              <div>Scheme Category - {fundDetails.meta.scheme_category}</div>
-              <div>Scheme Type - {fundDetails.meta.scheme_type}</div>
+            <div className="fund-container">
+              <h3>{fundDetails.meta.scheme_name}</h3>
+              <div className="fund-info">
+                <span className="fund-label">Fund House</span> -{" "}
+                <span className="fund-value">
+                  {fundDetails.meta.fund_house}
+                </span>
+              </div>
+              <div className="fund-info">
+                <span className="fund-label">Scheme Category</span> -{" "}
+                <span className="fund-value">
+                  {fundDetails.meta.scheme_category}
+                </span>
+              </div>
+              <div className="fund-info">
+                <span className="fund-label">Scheme Type</span> -{" "}
+                <span className="fund-value">
+                  {fundDetails.meta.scheme_type}
+                </span>
+              </div>
               <LineChart data={fundDetails.data} id={id} />
-              <button onClick={onWatchlistClick} disabled={operationLoading}>
-                {alreadyInWatchlist
-                  ? "Remove from Watchlist"
-                  : "Add to Watchlist"}
-              </button>
+              <div className="button-container">
+                <Button onClick={onWatchlistClick} hidden={operationLoading}>
+                  {alreadyInWatchlist
+                    ? "Remove from Watchlist"
+                    : "Add to Watchlist"}
+                </Button>
+              </div>
             </div>
           )}
         </div>
