@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 
 import ApplicationContextProvider from "./context/ApplicationContextProvider";
-import "./index.css";
+import "./index.scss";
 import "./normalize.scss";
 import Routes from "./routes";
 import * as serviceWorker from "./serviceWorker";

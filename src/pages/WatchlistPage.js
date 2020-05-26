@@ -11,15 +11,16 @@ const Watchlist = () => {
       {watchlist.length === 0 ? (
         <div>Add some items to your watchlist!</div>
       ) : (
-        <div>
+        <div style={{ paddingBottom: "100px" }}>
           {watchlist.map(
-            ({ schemeCode, schemeName, fund_house, scheme_type }) => (
+            ({ scheme_code, scheme_name, fund_house, scheme_type }) => (
               <MenuItem
-                key={schemeCode}
-                schemeCode={schemeCode}
-                schemeName={schemeName}
+                key={scheme_code}
+                schemeCode={scheme_code}
+                schemeName={scheme_name}
                 fund_house={fund_house}
                 scheme_type={scheme_type}
+                source="/watchlist"
               />
             )
           )}

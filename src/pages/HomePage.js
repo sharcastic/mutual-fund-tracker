@@ -42,13 +42,15 @@ const HomePage = () => {
       return (
         <div>
           <h3>Here are some of our suggested funds!</h3>
-          {suggestedFunds.map(({ schemeName, schemeCode }) => (
-            <MenuItem
-              key={schemeCode}
-              schemeCode={schemeCode}
-              schemeName={schemeName}
-            />
-          ))}
+          <div className="items-container">
+            {suggestedFunds.map(({ schemeName, schemeCode }) => (
+              <MenuItem
+                key={schemeCode}
+                schemeCode={schemeCode}
+                schemeName={schemeName}
+              />
+            ))}
+          </div>
         </div>
       );
     }
@@ -69,6 +71,7 @@ const HomePage = () => {
             key={schemeCode}
             schemeCode={schemeCode}
             schemeName={schemeName}
+            source="/home"
           />
         ))}
       </div>
@@ -77,11 +80,13 @@ const HomePage = () => {
 
   const onInputChange = (event) => setSearchTerm(event.target.value);
 
-  const onSearchClick = () => {};
-
   const closeSearchMode = () => {
     setSearchMode(false);
     setSearchTerm("");
+  };
+
+  const onSearchClick = () => {
+    setSearchMode(true);
   };
 
   return (
@@ -89,12 +94,11 @@ const HomePage = () => {
       {searchMode ? (
         <div className="home-header">
           <TextField
-            // label="Password"
             placeholder="Search for a fund"
             value={searchTerm}
             onChange={onInputChange}
             name="search-term"
-            // variant="outlined"
+            autoFocus
             className="search-input"
             type="text"
             InputProps={{
@@ -105,7 +109,7 @@ const HomePage = () => {
               ),
               endAdornment: (
                 <InputAdornment position="end">
-                  <CloseIcon onClick={closeSearchMode} />
+                  <CloseIcon onClick={closeSearchMode} className="close-icon" />
                 </InputAdornment>
               ),
             }}
@@ -114,10 +118,7 @@ const HomePage = () => {
       ) : (
         <div className="home-header">
           <h4>Featured Funds</h4>
-          <div
-            className="home-header-right"
-            onClick={() => setSearchMode(true)}
-          >
+          <div className="home-header-right" onClick={onSearchClick}>
             <span>Search Funds</span>
             <SearchIcon title="searchIcon" className="search-icon" />
           </div>

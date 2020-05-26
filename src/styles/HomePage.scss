@@ -22,8 +22,12 @@
   .search-input {
     width: 100%;
   }
+  .close-icon {
+    cursor: pointer;
+  }
 }
 
 .items-container {
   overflow: scroll;
+  padding-bottom: 100px;
 }

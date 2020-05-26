@@ -7,6 +7,9 @@ body {
   padding: 20px;
   box-sizing: border-box;
   background-color: #f1f1f1;
+  @media screen and (orientation: landscape) {
+    padding-top: 100px;
+  }
 }
 
 code {

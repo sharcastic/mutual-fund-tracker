@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { ReactComponent as BackIcon } from "../assets/back.svg";
 import Button from "../components/Button/Button";
@@ -13,6 +13,9 @@ import LineChart from "../components/LineChart/LineChart";
 import "../styles/FundPage.scss";
 
 const FundPage = () => {
+  const {
+    state: { source },
+  } = useLocation();
   const navigate = useNavigate();
   const { addToWatchlist, removeFromWatchlist, watchlist } = useContext(
     ApplicationContext
@@ -40,7 +43,7 @@ const FundPage = () => {
   };
 
   const onBackClick = () => {
-    navigate("/home");
+    navigate(source);
   };
 
   useEffect(() => {
@@ -104,7 +107,7 @@ const FundPage = () => {
               </div>
               <LineChart data={fundDetails.data} id={id} />
               <div className="button-container">
-                <Button onClick={onWatchlistClick} hidden={operationLoading}>
+                <Button onClick={onWatchlistClick} loading={operationLoading}>
                   {alreadyInWatchlist
                     ? "Remove from Watchlist"
                     : "Add to Watchlist"}

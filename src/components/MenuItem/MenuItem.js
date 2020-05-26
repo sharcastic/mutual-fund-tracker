@@ -16,10 +16,11 @@ const MenuItem = ({
   scheme_type = arrOfSchemeTypes[
     randomNumberGenerator(arrOfSchemeTypes.length)
   ],
+  source = "/home",
 }) => {
   const navigate = useNavigate();
   const onItemClick = () => {
-    navigate(`/fund/${schemeCode}`);
+    navigate(`/fund/${schemeCode}`, { state: { source } });
   };
   return (
     <div onClick={onItemClick} className="menu-item">

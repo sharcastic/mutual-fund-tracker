@@ -141,8 +141,8 @@ const LoginModal = ({ closeModal }) => {
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          <Tab label="Item One" />
-          <Tab label="Item Two" />
+          <Tab label="Login" />
+          <Tab label="Sign Up" />
         </Tabs>
       </AppBar>
       <SwipeableViews

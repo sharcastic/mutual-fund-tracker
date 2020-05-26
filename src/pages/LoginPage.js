@@ -31,8 +31,6 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <button onClick={onTrackerOpen}>Open Tracker!</button>
-        <button onClick={onSignoutClick}>Sign Out!!</button>
-        {userState.user && <div>USER LOGGED IN CURRENTLY!</div>}
         {modalOpen && <LoginModal closeModal={closeModal} />}
       </header>
     </div>
