@@ -7,12 +7,9 @@ import "../styles/LoginPage.scss";
 
 const App = () => {
   const navigate = useNavigate();
-  const { signOutAttempt, userState } = useContext(ApplicationContext);
+  const { userState } = useContext(ApplicationContext);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const onSignoutClick = () => {
-    signOutAttempt();
-  };
   const onTrackerOpen = () => {
     if (userState.user) {
       if (userState.profileDetails) {

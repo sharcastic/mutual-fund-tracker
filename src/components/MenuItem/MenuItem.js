@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
 import {
   randomNumberGenerator,
@@ -16,11 +15,10 @@ const MenuItem = ({
   scheme_type = arrOfSchemeTypes[
     randomNumberGenerator(arrOfSchemeTypes.length)
   ],
-  source = "/home",
+  onMenuItemClick,
 }) => {
-  const navigate = useNavigate();
   const onItemClick = () => {
-    navigate(`/fund/${schemeCode}`, { state: { source } });
+    onMenuItemClick(schemeCode);
   };
   return (
     <div onClick={onItemClick} className="menu-item">

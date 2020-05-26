@@ -1,10 +1,16 @@
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 import ApplicationContext from "../context/ApplicationContext";
 import MenuItem from "../components/MenuItem/MenuItem";
 
 const Watchlist = () => {
+  const navigate = useNavigate();
   const { watchlist } = useContext(ApplicationContext);
+
+  const onMenuItemClick = (schemeCode) => {
+    navigate(`/fund/${schemeCode}`, { state: { source: "/watchlist" } });
+  };
   return (
     <div>
       <h2>Watchlist page!</h2>
@@ -20,7 +26,7 @@ const Watchlist = () => {
                 schemeName={scheme_name}
                 fund_house={fund_house}
                 scheme_type={scheme_type}
-                source="/watchlist"
+                onMenuItemClick={onMenuItemClick}
               />
             )
           )}

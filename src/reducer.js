@@ -13,6 +13,8 @@ import {
   REMOVED_ITEM_FROM_WATCHLIST,
   ADD_ITEM_TO_WATCHLIST,
   RETRIEVED_WATCHLIST,
+  SIGNUP_ATTEMPT,
+  SIGNUP_ERROR,
 } from "./constants";
 
 export const userStateReducer = (
@@ -20,7 +22,8 @@ export const userStateReducer = (
   action
 ) => {
   switch (action.type) {
-    case LOGIN_ATTEMPT: {
+    case LOGIN_ATTEMPT:
+    case SIGNUP_ATTEMPT: {
       return { ...userState, loading: true };
     }
     case LOGIN_SUCCESS: {
@@ -34,6 +37,7 @@ export const userStateReducer = (
       };
     }
     case SIGNOUT_ERROR:
+    case SIGNUP_ERROR:
     case LOGIN_ERROR: {
       return { ...userState, loading: false, error: action.payload.message };
     }
@@ -60,7 +64,11 @@ export const userStateReducer = (
 export const watchlistReducer = (_, action) => {
   switch (action.type) {
     case RETRIEVED_WATCHLIST: {
-      return [...action.payload.watchlist];
+      const watchlist =
+        action.payload && action.payload.watchlist
+          ? action.payload.watchlist
+          : [];
+      return [...watchlist];
     }
     case ADD_ITEM_TO_WATCHLIST: {
       return [...action.payload];

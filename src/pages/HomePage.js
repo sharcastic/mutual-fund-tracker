@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { TextField, InputAdornment } from "@material-ui/core";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { suggestedFunds } from "../constants";
 import useDebounce from "../utils/useDebounce";
@@ -9,9 +10,14 @@ import { ReactComponent as CloseIcon } from "../assets/close.svg";
 import "../styles/HomePage.scss";
 
 const HomePage = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  debugger;
+  const [searchTerm, setSearchTerm] = useState(
+    state && state.searchTerm ? state.searchTerm : ""
+  );
   const [listOfFunds, setListOfFunds] = useState([]);
-  const [searchMode, setSearchMode] = useState(false);
+  const [searchMode, setSearchMode] = useState(state && state.searchTerm);
   const [loading, setLoading] = useState(false);
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
@@ -34,6 +40,10 @@ const HomePage = () => {
     }
   }, [debouncedSearchTerm]);
 
+  const onMenuItemClick = (schemeCode) => {
+    navigate(`/fund/${schemeCode}`, { state: { source: "/home", searchTerm } });
+  };
+
   const renderContent = () => {
     if (loading) {
       return <div>Loading Funds!</div>;
@@ -48,6 +58,7 @@ const HomePage = () => {
                 key={schemeCode}
                 schemeCode={schemeCode}
                 schemeName={schemeName}
+                onMenuItemClick={onMenuItemClick}
               />
             ))}
           </div>
@@ -71,7 +82,7 @@ const HomePage = () => {
             key={schemeCode}
             schemeCode={schemeCode}
             schemeName={schemeName}
-            source="/home"
+            onMenuItemClick={onMenuItemClick}
           />
         ))}
       </div>

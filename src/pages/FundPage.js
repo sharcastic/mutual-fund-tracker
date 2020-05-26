@@ -14,7 +14,7 @@ import "../styles/FundPage.scss";
 
 const FundPage = () => {
   const {
-    state: { source },
+    state: { source, searchTerm = "" },
   } = useLocation();
   const navigate = useNavigate();
   const { addToWatchlist, removeFromWatchlist, watchlist } = useContext(
@@ -43,7 +43,8 @@ const FundPage = () => {
   };
 
   const onBackClick = () => {
-    navigate(source);
+    debugger;
+    navigate(source, { state: searchTerm ? { searchTerm } : undefined });
   };
 
   useEffect(() => {

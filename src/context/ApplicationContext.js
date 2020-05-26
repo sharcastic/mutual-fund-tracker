@@ -10,6 +10,7 @@ const AppliationContext = createContext({
   watchlist: undefined,
   addToWatchlist: undefined,
   removeFromWatchlist: undefined,
+  signUpAttempt: undefined,
 });
 
 export default AppliationContext;

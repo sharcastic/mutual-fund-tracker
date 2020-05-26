@@ -20,6 +20,8 @@ import {
   RETRIEVED_WATCHLIST,
   ADD_ITEM_TO_WATCHLIST,
   REMOVED_ITEM_FROM_WATCHLIST,
+  SIGNUP_ATTEMPT,
+  SIGNUP_ERROR,
 } from "../constants";
 import { userStateReducer, watchlistReducer } from "../reducer";
 import ApplicationContext from "./ApplicationContext";
@@ -86,6 +88,20 @@ const ApplicationContextProvider = ({ children }) => {
           payload: { message: error.message },
         });
         return { status: LOGIN_ERROR, error };
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const signUpAttempt = useCallback((email, password) => {
+    userDispatch({ type: SIGNUP_ATTEMPT });
+    return auth
+      .createUserWithEmailAndPassword(email, password)
+      .catch((error) => {
+        userDispatch({
+          type: SIGNUP_ERROR,
+          payload: { message: error.message },
+        });
+        return { status: SIGNUP_ERROR, error };
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -178,6 +194,7 @@ const ApplicationContextProvider = ({ children }) => {
         watchlist,
         addToWatchlist,
         removeFromWatchlist,
+        signUpAttempt,
       }}
     >
       {children}

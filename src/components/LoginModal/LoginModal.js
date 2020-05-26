@@ -106,12 +106,13 @@ const TabPanel = ({ value, index, loading, onButtonClick, error }) => {
 
 const LoginModal = ({ closeModal }) => {
   const navigate = useNavigate();
-  const { userState, loginAttempt } = useContext(ApplicationContext);
+  const { userState, loginAttempt, signUpAttempt } = useContext(
+    ApplicationContext
+  );
   const [tabValue, setValue] = React.useState(0);
 
   const onLoginClick = async (email, password) => {
     const { status, error = undefined } = await loginAttempt(email, password);
-    console.log("STATUS", status);
     if (status === NO_PROFILE_DATA) {
       navigate("/user-details", { state: { allowed: true } });
     } else if (status === RETRIEVED_PROFILE_DATA) {
@@ -121,7 +122,12 @@ const LoginModal = ({ closeModal }) => {
     }
   };
 
-  const onSignUpClick = (email, password) => {};
+  const onSignUpClick = async (email, password) => {
+    const { error = undefined } = await signUpAttempt(email, password);
+    if (!error) {
+      navigate("/user-details", { state: { allowed: true } });
+    }
+  };
 
   const handleChangeIndex = (index) => {
     setValue(index);
