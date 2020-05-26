@@ -8,6 +8,7 @@ import FundPage from "./pages/FundPage";
 import WatchlistPage from "./pages/WatchlistPage";
 import UserInformationPage from "./pages/UserInformationPage";
 import EditProfilePage from "./pages/EditProfilePage";
+import Navbar from "./components/Navbar/Navbar";
 
 const ProtectedRoute = ({ component: Component }) => {
   const { userState } = useContext(ApplicationContext);
@@ -24,26 +25,29 @@ const RoutesComponent = () => {
     return <div>Loading Application!</div>;
   }
   return (
-    <Routes>
-      <Route path="/" element={<App />} />
-      <Route
-        path="/user-details"
-        element={<ProtectedRoute component={UserInformationPage} />}
-      />
-      <Route path="/home" element={<ProtectedRoute component={HomePage} />} />
-      <Route
-        path="/fund/:id"
-        element={<ProtectedRoute component={FundPage} />}
-      />
-      <Route
-        path="/watchlist"
-        element={<ProtectedRoute component={WatchlistPage} />}
-      />
-      <Route
-        path="/edit-profile"
-        element={<ProtectedRoute component={EditProfilePage} />}
-      />
-    </Routes>
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route
+          path="/user-details"
+          element={<ProtectedRoute component={UserInformationPage} />}
+        />
+        <Route path="/home" element={<ProtectedRoute component={HomePage} />} />
+        <Route
+          path="/fund/:id"
+          element={<ProtectedRoute component={FundPage} />}
+        />
+        <Route
+          path="/watchlist"
+          element={<ProtectedRoute component={WatchlistPage} />}
+        />
+        <Route
+          path="/edit-profile"
+          element={<ProtectedRoute component={EditProfilePage} />}
+        />
+      </Routes>
+    </>
   );
 };
 

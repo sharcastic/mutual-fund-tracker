@@ -1,0 +1,10 @@
+.user-info-page,
+form {
+  display: flex;
+  flex-direction: column;
+  .name-field,
+  .age-field,
+  .gender-field {
+    margin-bottom: 20px;
+  }
+}

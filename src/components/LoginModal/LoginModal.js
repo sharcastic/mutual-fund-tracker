@@ -13,7 +13,8 @@ import {
   RETRIEVED_PROFILE_DATA,
 } from "../../constants";
 
-const TabPanel = ({ value, index, loading, onButtonClick }) => {
+const TabPanel = ({ value, index, loading, onButtonClick, error }) => {
+  console.log("ERROR", error);
   const [password, setPassword] = useState({ error: undefined, value: "" });
   const [email, setEmail] = useState({ error: undefined, value: "" });
 
@@ -75,6 +76,7 @@ const TabPanel = ({ value, index, loading, onButtonClick }) => {
           <Button onClick={onClick} loading={loading} className="login-button">
             {value === 0 ? "Log in!" : "Complete Sign Up!"}
           </Button>
+          {error && <div className="error-message">{error}</div>}
         </div>
       )}
     </div>
@@ -131,12 +133,14 @@ const LoginModal = ({ closeModal }) => {
           value={tabValue}
           index={0}
           loading={userState.loading}
+          error={userState.error}
           onButtonClick={onLoginClick}
         />
         <TabPanel
           value={tabValue}
           index={1}
           loading={userState.loading}
+          error={userState.error}
           onButtonClick={onSignUpClick}
         />
       </SwipeableViews>

@@ -3,9 +3,20 @@ body {
   font-family: "Roboto";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.chart {
+  height: 300px;
+  margin-top: 30px;
+  @media screen and (orientation: landscape) {
+    height: 400px;
+  }
 }
