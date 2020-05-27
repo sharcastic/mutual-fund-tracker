@@ -28,8 +28,10 @@ const RoutesComponent = () => {
     return <div>Loading Application!</div>;
   }
   return (
+    <div>
+    <Navbar disabledRoutes={["/", "/user-details"]} />
     <Suspense fallback={<div>Loading Application!</div>}>
-      <Navbar disabledRoutes={["/", "/user-details"]} />
+     
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route
@@ -51,6 +53,7 @@ const RoutesComponent = () => {
         />
       </Routes>
     </Suspense>
+    </div>
   );
 };
 
