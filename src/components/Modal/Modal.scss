@@ -23,14 +23,16 @@
   .modal-content {
     position: relative;
     background-color: white;
+    padding-top: 50px;
     .post__container {
       width: 500px;
     }
     .close-modal {
       position: absolute;
-      top: 0;
-      right: 0;
-      margin-top: -20px;
+      top: 10px;
+      right: 15px;
+      height: 25px;
+      width: 25px;
       cursor: pointer;
     }
   }

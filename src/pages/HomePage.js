@@ -12,7 +12,6 @@ import "../styles/HomePage.scss";
 const HomePage = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  debugger;
   const [searchTerm, setSearchTerm] = useState(
     state && state.searchTerm ? state.searchTerm : ""
   );
