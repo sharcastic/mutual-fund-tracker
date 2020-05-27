@@ -55,6 +55,7 @@ const ApplicationContextProvider = ({ children }) => {
   );
 
   const retrieveProfileDetails = useCallback(async (email) => {
+    console.log("ENV", process.env);
     const ref = db.collection(USER_PROFILE_DATABASE_NAME).doc(email);
     const doc = await ref.get({ source: "server" });
     if (doc.exists) {

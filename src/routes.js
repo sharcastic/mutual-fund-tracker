@@ -1,14 +1,17 @@
-import React, { useContext } from "react";
+import React, { useContext, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import ApplicationContext from "./context/ApplicationContext";
-import App from "./pages/LoginPage";
-import HomePage from "./pages/HomePage";
-import FundPage from "./pages/FundPage";
-import WatchlistPage from "./pages/WatchlistPage";
-import UserInformationPage from "./pages/UserInformationPage";
-import EditProfilePage from "./pages/EditProfilePage";
 import Navbar from "./components/Navbar/Navbar";
+
+const LoginPage = React.lazy(() => import("./pages/LoginPage"));
+const HomePage = React.lazy(() => import("./pages/HomePage"));
+const FundPage = React.lazy(() => import("./pages/FundPage"));
+const WatchlistPage = React.lazy(() => import("./pages/WatchlistPage"));
+const EditProfilePage = React.lazy(() => import("./pages/EditProfilePage"));
+const UserInformationPage = React.lazy(() =>
+  import("./pages/UserInformationPage")
+);
 
 const ProtectedRoute = ({ component: Component }) => {
   const { userState } = useContext(ApplicationContext);
@@ -25,10 +28,10 @@ const RoutesComponent = () => {
     return <div>Loading Application!</div>;
   }
   return (
-    <>
+    <Suspense fallback={<div>Loading Application!</div>}>
       <Navbar disabledRoutes={["/", "/user-details"]} />
       <Routes>
-        <Route path="/" element={<App />} />
+        <Route path="/" element={<LoginPage />} />
         <Route
           path="/user-details"
           element={<ProtectedRoute component={UserInformationPage} />}
@@ -47,7 +50,7 @@ const RoutesComponent = () => {
           element={<ProtectedRoute component={EditProfilePage} />}
         />
       </Routes>
-    </>
+    </Suspense>
   );
 };
 
