@@ -46,6 +46,7 @@ const App = () => {
             Funds saved in Watchlist is saved in the database and retrieved
             whenever its needed.
           </li>
+          <li>On click of back on the fund specific page, the search page will remember its search term if it was previously entered.</li>
         </ul>
         <div className="button-container">
           <Button onClick={onTrackerOpen}>Open Application</Button>

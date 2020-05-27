@@ -1,68 +1,17 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# MUTUAL FUND TRACKER
 
-## Available Scripts
+This project is currently hosted at [http://mutual-fund-tracker.now.sh/](http://mutual-fund-tracker.now.sh/).
 
-In the project directory, you can run:
+To run this locally, you would need configuration values to connect with firebase. These are currently being added as an environmental variable. Please let me know if you need these values.
 
-### `yarn start`
+This project was built with Create React App. 
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## There are some assumptions that were made to complete this application. I'm mentioning them below :
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+- The email and password is stored in Firebase and the application is not currently validating if the email actually belongs to the user.
+- The password can be anything with 6 or more characters.
+- The data for the mutual funds is coming from [https://www.mfapi.in/](https://www.mfapi.in/) which has a few limitations on its own.
+  - The search endpoint only returns the name of the Mutual Fund. Due to this, I have had to mock the price changes and some mutual fund details like the fund house for that particular mutual fund. This mocking is picked randomly from a handful of items that are previously defined.
+  - The fund specific endpoint returns price values but these are quite haphazard and irregular. Some might have values for only one year from 2005 to 2006 but some might have values from the last 10 years. Due to this uncertainty, not a lot of features could be added to the chart component itself.
+- The user doesn't automatically get signed out everytime he closes or navigates away from the application. 
 
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
